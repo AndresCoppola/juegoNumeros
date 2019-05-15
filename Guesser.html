@@ -1,36 +1,104 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Guessing game</title>
 
-	<script
-			  src="https://code.jquery.com/jquery-3.4.1.min.js"
-			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-			  crossorigin="anonymous"></script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-</head>
-<body>
-	
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Guessing game</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
+
+  </head>
+  
+  <body>
 	<div>
-		Numero: <input type="text" id="num">  <button type="button" id="arriesgo">Arriesgo</button> 
-	
-	</div>
+		<center><h1> Bienvenido</h1></center><br />
+		
+		<br />
+		<br />
 
-	
+		<div class="container">
+  			<fieldset id="rol">
+  				<p><center>Elige un rol</center> 
+	  			<div class="row">
+	    			<div class="col-sm-6" style="text-align: center;">
+	    				<button type="button" id="adivinador" class="btn btn-primary">Adiviniador</button> 
+	    			</div>
+	    			<div class="col-sm-6" style="text-align: center;">
+	    				<button type="button" id="pensador" class="btn btn-primary">Pensador</button> 
+	    			</div>
+	  			</div>
+  			</fieldset>
+			<br />
+			<fieldset id="enJuego" style="display:none;">
+				<center>
+					<div>
+						<span id="numLabel">Numero: </span><input type="text" id="num" >
+						<button type="button" id="arriesgar" class="btn btn-primary">Arriesgar</button>
+						<button type="button" id="pensar" class="btn btn-primary">Listo</button>
+					</div>	
+				</center>
+				<br />
+				<center>
+					<div id="mensajes" style="display: none;">
+						<span id="msgBuenas" class="badge badge badge-success" >1 Bien</span>
+						<span id="msgRegulares" class="badge badge badge-warning" >2 Regular</span>
+					</div>
+					<div id="respuestas" style="display: none;">
+						<span class="badge badge badge-success" id="resBuenas" style="display: inline; margin-right: 5px;">Buenas: </span><input style="width:30px; display: inline; height: 22px;" class="form-control form-control-sm" type="text" id="inputResB" >
+						<span class="badge badge badge-warning"id="resMalas" style="display: inline; margin-right: 5px;">Regulares: </span><input style="width:30px; display: inline; height: 22px;" class="form-control form-control-sm" type="text" id="inputResR" >
+						<button type="button" id="resListo" class="btn btn-primary" style="display: block; margin-top: 10px;">Ok</button>
+					</div>
+				</center>
 
-</body>
+			</fieldset>
+		</div><!-- container -->
+	</div> 
+
+
+  </body>
 </html>
 
+
+
+
 <script type="text/javascript">
+  $("#adivinador").click(function(){
+  	$("#pensar").hide();
+  	$("#rol").fadeOut( 1600, "linear");
 
+  	setTimeout(function(){
+  		$("#enJuego").fadeIn();
+  	}, 1601);
+  });	
 
+  $("#pensador").click(function(){
+  	$("#arriesgar").hide();
+  	$("#rol").fadeOut( 1600, "linear");
+  	$("#numLabel").html("Piensa un Número  ");
+  	setTimeout(function(){
+  		$("#enJuego").fadeIn();
+  	}, 1601);
+  });
 
+  $("#arriesgar").click(function(){
+  	$("#mensajes").fadeOut(300, "linear");
+  	$("#mensajes").fadeIn(500, "linear");	
 
-$("#arriesgo").click(function(){
+  });
 
-	alert("prueba de jquery");
-});
+  $("#pensar").click(function(){
+  	$("#respuestas").fadeOut(300, "linear");
+  	$("#inputResB").html("");
+	$("#inputResR").html("");  		
+  	$("#respuestas").fadeIn(500, "linear");	
 
+  });
 
 
 </script>
+
