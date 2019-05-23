@@ -37,21 +37,25 @@
 			<fieldset id="enJuego" style="display:none;">
 				<center>
 					<div>
-						<span id="numLabel">Numero: </span><input type="text" id="num" >
+						<span id="numLabel">Ingresa un número de 4 cifras: </span><input type="text" id="num" style="display:block; margin-top: 5px; margin-bottom: 10px;" >
 						<button type="button" id="arriesgar" class="btn btn-primary">Arriesgar</button>
 						<button type="button" id="pensar" class="btn btn-primary">Listo</button>
 					</div>	
 				</center>
 				<br />
 				<center>
+					<div id="intentos" style="display: none;">
+						<span id="intento" ></span>
+					</div>
 					<div id="mensajes" style="display: none;">
-						<span id="msgBuenas" class="badge badge badge-success" >1 Bien</span>
-						<span id="msgRegulares" class="badge badge badge-warning" >2 Regular</span>
+						<span id="msgBuenas" class="badge badge badge-success" ></span>
+						<span id="msgRegulares" class="badge badge badge-warning" ></span>
 					</div>
 					<div id="respuestas" style="display: none;">
 						<span class="badge badge badge-success" id="resBuenas" style="display: inline; margin-right: 5px;">Buenas: </span><input style="width:30px; display: inline; height: 22px;" class="form-control form-control-sm" type="text" id="inputResB" >
 						<span class="badge badge badge-warning"id="resMalas" style="display: inline; margin-right: 5px;">Regulares: </span><input style="width:30px; display: inline; height: 22px;" class="form-control form-control-sm" type="text" id="inputResR" >
 						<button type="button" id="resListo" class="btn btn-primary" style="display: block; margin-top: 10px;">Ok</button>
+
 					</div>
 				</center>
 
@@ -67,9 +71,13 @@
 
 
 <script type="text/javascript">
+  var guessIt = 0;
+
   $("#adivinador").click(function(){
   	$("#pensar").hide();
   	$("#rol").fadeOut( 1600, "linear");
+
+  	guessIt = Math.floor(1000 + Math.random() * 9000);
 
   	setTimeout(function(){
   		$("#enJuego").fadeIn();
@@ -79,22 +87,45 @@
   $("#pensador").click(function(){
   	$("#arriesgar").hide();
   	$("#rol").fadeOut( 1600, "linear");
-  	$("#numLabel").html("Piensa un Número  ");
+  	$("#numLabel").html("Piensa un Número de 4 cifras ");
+  	$("#num").hide();
+
   	setTimeout(function(){
   		$("#enJuego").fadeIn();
   	}, 1601);
   });
 
   $("#arriesgar").click(function(){
+  	var Buenas = 0;
+  	var Regulares = 0;
+  	if( parseInt($("#num").val()) === parseInt(guessIt)){
+  		alert("adivinado");
+  	}else{
+  		var arrGuessIt = guessIt.toString().split("");
+  		var arrTryout = $("#num").val().toString().split("");
+  		arrGuessIt.forEach(function(item, i){
+  			//Calculo las que estan bien
+  			if( parseInt(item) == parseInt(arrTryout[i]) )
+  				Buenas ++;
+  			//Calculo las que estan regulares
+  			if(arrTryout.includes(item) && parseInt(item) != parseInt(arrTryout[i])){
+  				Regulares ++;
+  			}
+  		});
+  		$("#msgBuenas").html( Buenas + " Bien");
+  		$("#msgRegulares").html( Regulares + " Regular");
+  	} 
+
   	$("#mensajes").fadeOut(300, "linear");
   	$("#mensajes").fadeIn(500, "linear");	
 
   });
 
   $("#pensar").click(function(){
+  	$("#pensar").fadeOut(300, "linear");
   	$("#respuestas").fadeOut(300, "linear");
-  	$("#inputResB").html("");
-	$("#inputResR").html("");  		
+  	$("#inputResB").val("");
+	$("#inputResR").val("");  		
   	$("#respuestas").fadeIn(500, "linear");	
 
   });
