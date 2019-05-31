@@ -37,25 +37,22 @@
 			<fieldset id="enJuego" style="display:none;">
 				<center>
 					<div>
-						<span id="numLabel">Ingresa un número de 4 cifras: </span><input type="text" id="num" style="display:block; margin-top: 5px; margin-bottom: 10px;" >
+						<span id="numLabel">Numero: </span><input type="text" id="num" >
+						<span id="intento" style="display:none;"> </span> 
 						<button type="button" id="arriesgar" class="btn btn-primary">Arriesgar</button>
 						<button type="button" id="pensar" class="btn btn-primary">Listo</button>
 					</div>	
 				</center>
 				<br />
 				<center>
-					<div id="intentos" style="display: none;">
-						<span id="intento" ></span>
-					</div>
 					<div id="mensajes" style="display: none;">
-						<span id="msgBuenas" class="badge badge badge-success" ></span>
-						<span id="msgRegulares" class="badge badge badge-warning" ></span>
+						<span id="msgBuenas" class="badge badge badge-success" >1 Bien</span>
+						<span id="msgRegulares" class="badge badge badge-warning" >2 Regular</span>
 					</div>
 					<div id="respuestas" style="display: none;">
 						<span class="badge badge badge-success" id="resBuenas" style="display: inline; margin-right: 5px;">Buenas: </span><input style="width:30px; display: inline; height: 22px;" class="form-control form-control-sm" type="text" id="inputResB" >
-						<span class="badge badge badge-warning"id="resMalas" style="display: inline; margin-right: 5px;">Regulares: </span><input style="width:30px; display: inline; height: 22px;" class="form-control form-control-sm" type="text" id="inputResR" >
+						<span class="badge badge badge-warning" id="resMalas" style="display: inline; margin-right: 5px;">Regulares: </span><input style="width:30px; display: inline; height: 22px;" class="form-control form-control-sm" type="text" id="inputResR" >
 						<button type="button" id="resListo" class="btn btn-primary" style="display: block; margin-top: 10px;">Ok</button>
-
 					</div>
 				</center>
 
@@ -71,65 +68,211 @@
 
 
 <script type="text/javascript">
-  var guessIt = 0;
 
-  $("#adivinador").click(function(){
-  	$("#pensar").hide();
-  	$("#rol").fadeOut( 1600, "linear");
+//$(function(){ 
+	var guessIt = 0;
+	guessIt = Math.floor(1000 + Math.random() * 9000);
+	var posibles = [];
+	var indexIntento = 0;
+	function getPosibles(){
+		var posibles = [];
+		for (var l = 0; l < 10 ; l++) {
+			for (var k = 0; k < 10 ; k++) {
+				for (var j = 0; j < 10 ; j++) {	
+					for (var i = 0; i < 10 ; i++) {
+						var elem = ""+ l + k + j + i;
+						posibles.push(elem); 
+					}					}
+			}	
+		}	
+		return posibles;
+	}
 
-  	guessIt = Math.floor(1000 + Math.random() * 9000);
+	  $("#adivinador").click(function(){
+	  	$("#pensar").hide();
+	  	$("#rol").fadeOut( 1600, "linear");
 
-  	setTimeout(function(){
-  		$("#enJuego").fadeIn();
-  	}, 1601);
-  });	
+	  	setTimeout(function(){
+	  		$("#enJuego").fadeIn();
+	  	}, 1601);
+	  });	
 
-  $("#pensador").click(function(){
-  	$("#arriesgar").hide();
-  	$("#rol").fadeOut( 1600, "linear");
-  	$("#numLabel").html("Piensa un Número de 4 cifras ");
-  	$("#num").hide();
+	  $("#pensador").click(function(){
+	  	$("#arriesgar").hide();
+	  	$("#rol").fadeOut( 1600, "linear");
+	  	$("#num").hide();	
+	  	$("#numLabel").html("Piensa un Número  ");
+	  	setTimeout(function(){
+	  		$("#enJuego").fadeIn();
+	  	}, 1601);
+	  });
 
-  	setTimeout(function(){
-  		$("#enJuego").fadeIn();
-  	}, 1601);
-  });
+	  // $("#arriesgar").click(function(){
+	  // 	$("#mensajes").fadeOut(300, "linear");
+	  // 	$("#mensajes").fadeIn(500, "linear");	
 
-  $("#arriesgar").click(function(){
-  	var Buenas = 0;
-  	var Regulares = 0;
-  	if( parseInt($("#num").val()) === parseInt(guessIt)){
-  		alert("adivinado");
-  	}else{
-  		var arrGuessIt = guessIt.toString().split("");
-  		var arrTryout = $("#num").val().toString().split("");
-  		arrGuessIt.forEach(function(item, i){
-  			//Calculo las que estan bien
-  			if( parseInt(item) == parseInt(arrTryout[i]) )
-  				Buenas ++;
-  			//Calculo las que estan regulares
-  			if(arrTryout.includes(item) && parseInt(item) != parseInt(arrTryout[i])){
-  				Regulares ++;
-  			}
-  		});
+	  // });
+
+	  $("#arriesgar").click(function(){
+  		var Buenas = 0;
+  		var Regulares = 0;
+  		if( parseInt($("#num").val()) === parseInt(guessIt)){
+  			alert("adivinado");
+  		}else{
+  			var arrGuessIt = guessIt.toString().split("");
+  			var arrTryout = $("#num").val().toString().split("");
+  			arrGuessIt.forEach(function(item, i){
+  				//Calculo las que estan bien
+  				if( parseInt(item) == parseInt(arrTryout[i]) )
+  					Buenas ++;
+  				//Calculo las que estan regulares
+  				if(arrTryout.includes(item) && parseInt(item) != parseInt(arrTryout[i])){
+  					Regulares ++;
+  				}
+  			});
+
   		$("#msgBuenas").html( Buenas + " Bien");
   		$("#msgRegulares").html( Regulares + " Regular");
-  	} 
+  		$("#mensajes").fadeOut(300, "linear");
+  		$("#mensajes").fadeIn(500, "linear");
 
-  	$("#mensajes").fadeOut(300, "linear");
-  	$("#mensajes").fadeIn(500, "linear");	
 
-  });
+  		}
 
-  $("#pensar").click(function(){
-  	$("#pensar").fadeOut(300, "linear");
-  	$("#respuestas").fadeOut(300, "linear");
-  	$("#inputResB").val("");
-	$("#inputResR").val("");  		
-  	$("#respuestas").fadeIn(500, "linear");	
+  	});	
+		
+	  $("#pensar").click(function(){
+	  	posibles = getPosibles();
+	  	eliminadas = [];
+	  	indexIntento = parseInt(getAleatorios(4)-1);
 
-  });
+	  	var intento = posibles[indexIntento];
+	  	$("#respuestas").fadeOut(300, "linear");
+	  	$("#inputResB").html("");
+		$("#inputResR").html("");  		
+	  	$("#respuestas").fadeIn(500, "linear");	
+	  	$("#intento").html("Tu numero es: " + intento + "? <br />").css("display","block").data("intento",intento.split(""));
+	  	
 
+	  });
+
+	//Nueva logica
+
+	  function getAleatorios( cantidad ){
+	  	var aleat= [];
+	  	for (var i = 0; i < cantidad; i++) {
+	  		aleat.push(Math.floor(Math.random()*10));  
+	  	}
+	  	return aleat.join("");
+	  }
+
+
+
+	$("#resListo").click(function(){
+		//Chequeo que se hayan escrito valores
+		if($("#inputResB").val() || $("#inputResR").val()){
+			
+			//primer intento aleatorio		
+
+
+			evaluarRegulares();
+
+		}else{
+			//Pido que se ingresen los valores.
+			alert("Debe ingresar Buenas y Regulares, de no haber ninguna ingrese 0 en ambos casos");
+		}
+
+	});
+
+
+	function evaluarRegulares(){
+		aEvaluar = $("#intento").data("intento"); 
+		//porBorrar = [];
+
+		var aciertos=parseInt($("#inputResR").val()) + parseInt($("#inputResB").val());
+		var cap = posibles.length -1;
+
+		if(aciertos == 0){
+			//logica para ningun acierto ???
+			for (var i = cap; i >= 0; i--) {
+			//posibles.forEach(function(item, index){
+	  			elementos = posibles[i].split("");
+	  			var coincidencias =0;
+	  			for (var j = 0; j < 4; j++) {
+	  				if(elementos.includes(aEvaluar[j])){
+	  					coincidencias ++;
+	  				}
+	  			}	
+	  			if(coincidencias>0){
+	  				posibles.splice(i,1);
+	  			}	
+	  		}
+	  		//});
+		}else{	
+			for (var i = cap; i >= 0; i--) {				
+			//posibles.forEach(function(item, index){
+	  			elementos = posibles[i].split("");
+	  			var coincidencias =0;
+	  			for (var j = 0; j < 4; j++) {
+	  				if(elementos.includes(aEvaluar[j])){
+	  					coincidencias ++;
+	  				}
+	  			}	
+	  			if(coincidencias<aciertos){
+	  				posibles.splice(i,1);
+	  				
+	  			}	
+	  		}	
+
+	  		//});
+		}
+		
+
+		console.log("Quedan " + posibles.length + " numeros posibles");
+
+	  	if(posibles.length != 1){
+
+			if(posibles[indexIntento] != undefined){
+				posibles.splice(indexIntento,1);
+			}
+	  		siguienteIntento();
+	  	}else{
+	  		alert("GANASTE!");
+	  	}
+
+
+	function siguienteIntento(){
+
+		indexIntento-= 1;
+		if(indexIntento<0){
+				indexIntento = 10000;
+		}
+		if(posibles[indexIntento] == undefined){
+			siguienteIntento();
+		}
+	  
+		if(posibles.length < 1){
+			alert("No quedan mas numeros posibles, alguno de los dos se ha equivocado");
+		}
+
+
+	  	if(posibles[indexIntento] != undefined){
+	  		var intento = posibles[indexIntento];
+	  	$("#inputResB").html("");
+		$("#inputResR").html("");  		
+	  	$("#intento").html("Tu numero es: " + intento + "? <br />").css("display","block").data("intento",intento.split(""));	
+	  	}else{
+	  		siguienteIntento();
+	  	}	
+	  	
+
+	}
+
+
+}
+
+//Actualmente se eliminan con logica de regulares
+//las buenas solo se deberian usar en cuanto se obtenga una mala
 
 </script>
 
